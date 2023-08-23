@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 
 export function TheRoutes() {
   const { user } = UserAuth();
@@ -20,6 +21,7 @@ export function TheRoutes() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
