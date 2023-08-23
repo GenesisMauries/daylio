@@ -1,24 +1,20 @@
-import logo from './logo.svg';
+import { AuthContextProvider} from './context/AuthContext';
+import { TheRoutes } from './routes/routes';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import {Container, CssBaseline } from '@mui/material'
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+    <AuthContextProvider>
+      <CssBaseline/>
+    <TheRoutes/>
+    </AuthContextProvider>
+    </Container>
   );
 }
 
