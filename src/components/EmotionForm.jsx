@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../firebase/firebase.config";
-import { getDocs, collection, addDoc, Timestamp } from "firebase/firestore";
+import { addPost } from "../firebase/firebase.post";
 import {
   Button,
   Container,
@@ -16,44 +15,20 @@ function EmotionForm() {
   const navigate = useNavigate();
   const [emotion, setEmotion] = useState("");
   const [newPost, setNewPost] = useState("");
-  const handleSelect = (event) => {
+  const onHandleSelect = (event) => {
     setEmotion(event.target.value);
   };
   const onHandleInput = (event) => {
     setNewPost(event.target.value);
   };
-  // const [postList, setPostList] = useState([]);
-  // console.log(postList);
 
-  const postCollectionRef = collection(db, "daylioPost");
-
-  // const getpostList = async () => {
-  //   try {
-  //     const data = await getDocs(postCollectionRef);
-  //     const filteredData = data.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     setPostList(filteredData);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
   const onSubmitPost = async () => {
     try {
-      addDoc(postCollectionRef, {
-        emotion,
-        title: newPost,
-        userId: auth?.currentUser?.uid,
-        dateCreate: Timestamp.now(),
-      });
-
-      // getpostList();
+      await addPost(emotion, newPost);
       setEmotion("");
       setNewPost("");
-      navigate('/analizer')
-    } catch {
-    }
+      navigate("/analizer");
+    } catch {}
   };
   const menuOptions = [
     {
@@ -114,7 +89,7 @@ function EmotionForm() {
             id="demo-simple-select"
             value={emotion}
             label="Emotion"
-            onChange={handleSelect}
+            onChange={onHandleSelect}
           >
             {/* Generar dinámicamente las opciones del menú */}
             {menuOptions.map((option) => (
