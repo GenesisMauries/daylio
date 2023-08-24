@@ -15,7 +15,7 @@ function Header() {
   };
   return (
     <Container>
-      <AppBar position="static" sx={{ backgroundColor: "#E0E0E0" }}>
+      <AppBar position="static" sx={{ backgroundColor: "#E0E0E0" , borderRadius: "5px"}}>
         <Toolbar>
           <Typography
             variant="h6"
