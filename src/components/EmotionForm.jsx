@@ -13,14 +13,15 @@ import {
 } from "@mui/material";
 function EmotionForm() {
   const [emotion, setEmotion] = useState("");
-
-  const handleChange = (event) => {
+  const [newPost, setNewPost] = useState("");
+  const handleSelect = (event) => {
     setEmotion(event.target.value);
   };
+  const handleInput = (event) => {
+    setNewPost(event.target.value);
+  };
   const [postList, setPostList] = useState([]);
-  console.log(postList);
-
-  const [newPost, setNewPost] = useState("");
+  // console.log(postList);
 
   const postCollectionRef = collection(db, "daylioPost");
 
@@ -36,18 +37,22 @@ function EmotionForm() {
       console.error(err);
     }
   };
-  const onSubmitPost = async () => {
-    try {
-      await addDoc(postCollectionRef, {
-        emotion,
-        title: newPost,
-        userId: auth?.currentUser?.uid,
-        dateCreate: Timestamp.now(),
+  const onSubmitPost = () => {
+    addDoc(postCollectionRef, {
+      emotion,
+      title: newPost,
+      userId: auth?.currentUser?.uid,
+      dateCreate: Timestamp.now(),
+    })
+      .then(() => {
+        getpostList();
+        setEmotion("");
+        setNewPost("");
+      })
+
+      .catch((err) => {
+        console.error(err);
       });
-      getpostList();
-    } catch (err) {
-      console.error(err);
-    }
   };
   const menuOptions = [
     {
@@ -108,7 +113,7 @@ function EmotionForm() {
             id="demo-simple-select"
             value={emotion}
             label="Emotion"
-            onChange={handleChange}
+            onChange={handleSelect}
           >
             {/* Generar dinámicamente las opciones del menú */}
             {menuOptions.map((option) => (
@@ -118,24 +123,27 @@ function EmotionForm() {
             ))}
           </Select>
           <TextField
-            id="standard-multiline-static"
+            id="outlined-basic"
             label="Descripción"
+            variant="outlined"
             multiline
             rows={5}
             fullWidth
             placeholder="Breve descripción de tu día o tus pensamientos actuales"
-            variant="standard"
-            onChange={(e) => setNewPost(e.target.value)}
+            sx={{ marginTop: "30px" }}
+            onChange={handleInput}
           />
         </FormControl>
       </Grid>
 
       <Grid container columns={12} justifyContent="center" alignItems="center">
         <Button
+          fullWidth
           variant="contained"
           color="inherit"
-          size="medium"
+          size="large"
           onClick={onSubmitPost}
+          sx={{ marginTop: "30px" }}
         >
           Registro
         </Button>
