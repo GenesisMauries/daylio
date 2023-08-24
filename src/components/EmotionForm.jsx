@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase/firebase.config";
 import { getDocs, collection, addDoc, Timestamp } from "firebase/firestore";
 import {
@@ -12,47 +13,47 @@ import {
   MenuItem,
 } from "@mui/material";
 function EmotionForm() {
+  const navigate = useNavigate();
   const [emotion, setEmotion] = useState("");
   const [newPost, setNewPost] = useState("");
   const handleSelect = (event) => {
     setEmotion(event.target.value);
   };
-  const handleInput = (event) => {
+  const onHandleInput = (event) => {
     setNewPost(event.target.value);
   };
-  const [postList, setPostList] = useState([]);
+  // const [postList, setPostList] = useState([]);
   // console.log(postList);
 
   const postCollectionRef = collection(db, "daylioPost");
 
-  const getpostList = async () => {
+  // const getpostList = async () => {
+  //   try {
+  //     const data = await getDocs(postCollectionRef);
+  //     const filteredData = data.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setPostList(filteredData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  const onSubmitPost = async () => {
     try {
-      const data = await getDocs(postCollectionRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setPostList(filteredData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const onSubmitPost = () => {
-    addDoc(postCollectionRef, {
-      emotion,
-      title: newPost,
-      userId: auth?.currentUser?.uid,
-      dateCreate: Timestamp.now(),
-    })
-      .then(() => {
-        getpostList();
-        setEmotion("");
-        setNewPost("");
-      })
-
-      .catch((err) => {
-        console.error(err);
+      addDoc(postCollectionRef, {
+        emotion,
+        title: newPost,
+        userId: auth?.currentUser?.uid,
+        dateCreate: Timestamp.now(),
       });
+
+      // getpostList();
+      setEmotion("");
+      setNewPost("");
+      navigate('/analizer')
+    } catch {
+    }
   };
   const menuOptions = [
     {
@@ -131,7 +132,7 @@ function EmotionForm() {
             fullWidth
             placeholder="Breve descripción de tu día o tus pensamientos actuales"
             sx={{ marginTop: "30px" }}
-            onChange={handleInput}
+            onChange={onHandleInput}
           />
         </FormControl>
       </Grid>
