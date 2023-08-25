@@ -1,32 +1,36 @@
 import axios from "axios";
-function EmotionAnalizer() {
-  const apiUrl = "https://api.openai.com/v1/engines/davinci-codex/completions";
 
-  const prueba = async () => {
+function EmotionAnalyzer() {
+  // const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
+  const apiKey = "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";
+
+  const chatWithAI = async () => {
     try {
       const response = await axios.post(
-        apiUrl,
+        "https://api.openai.com/v1/chat/completions",
         {
-          prompt: "Que es monoku?", //prueba
-          max_tokens: 50,
-          temperature: 0.6,
-          n: 1,
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: "Hello!" }]
         },
         {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          }
         }
       );
 
       console.log(response.data);
+
     } catch (error) {
       console.error(error);
     }
   };
-  prueba();
-  return <>OK</>;
+
+  chatWithAI();
+
+  return <>Emotion Analyzer</>;
+
 }
 
-export default EmotionAnalizer;
+export default EmotionAnalyzer;
