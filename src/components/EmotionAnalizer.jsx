@@ -1,8 +1,8 @@
 import axios from "axios";
+import apiKey from "../env";
 
 function EmotionAnalyzer() {
-  // const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
-  const apiKey = "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";
+
 
   const chatWithAI = async () => {
     try {
