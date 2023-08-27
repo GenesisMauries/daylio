@@ -1,10 +1,11 @@
 import { db, auth } from "../firebase/firebase.config";
 import { getDocs, collection, addDoc, Timestamp } from "firebase/firestore";
 const postCollectionRef = collection(db, "daylioPost");
-export const addPost = (emotion, newPost) => {
+export const addPost = (emotion, newPost, chatResponse) => {
   return addDoc(postCollectionRef, {
     emotion,
-    title: newPost,
+    newPost,
+    chatResponse,
     userId: auth?.currentUser?.uid,
     dateCreate: Timestamp.now(),
   });

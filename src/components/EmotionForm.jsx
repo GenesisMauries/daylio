@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addPost } from "../firebase/firebase.post";
+import chatgpt from "../api/chatgpt";
 import {
   Button,
   Container,
@@ -24,7 +25,8 @@ function EmotionForm() {
 
   const onSubmitPost = async () => {
     try {
-      await addPost(emotion, newPost);
+      const chatResponse = await chatgpt(emotion, newPost);
+      await addPost(emotion, newPost, chatResponse);
       setEmotion("");
       setNewPost("");
       navigate("/analizer");
